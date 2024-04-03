@@ -1,4 +1,4 @@
-package models.responce_positive;
+package models.response_positive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import entity.TableAuthor;

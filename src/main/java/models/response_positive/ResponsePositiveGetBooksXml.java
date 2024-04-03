@@ -1,4 +1,4 @@
-package models.responce_positive;
+package models.response_positive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "authors_books")
-public class ResponcePositiveGetBooksXml {
+public class ResponsePositiveGetBooksXml {
 
     @XmlElementWrapper(name = "books")
     @XmlElement(name = "book", required = true)

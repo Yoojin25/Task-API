@@ -1,12 +1,10 @@
-package models.responce_positive;
+package models.response_positive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponcePositiveGetBooks {
-    private List<Book> books;
+public class ResponsePositiveSaveAuthor {
+    private long authorId;
 }
