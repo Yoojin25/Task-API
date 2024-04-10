@@ -1,4 +1,4 @@
-package Asserts;
+package steps.asserts;
 
 import models.response_positive.ResponsePositiveSaveAuthor;
 

@@ -16,8 +16,7 @@ import static steps.Specification.requestSpecXml;
 
 public class RequestExecutor {
 
-    public static ResponsePositiveSaveAuthor saveAuthor(String firstName, String familyName, String secondName) {
-        RequestSaveAuthor author = new RequestSaveAuthor(firstName, familyName, secondName);
+    public static ResponsePositiveSaveAuthor saveAuthor(RequestSaveAuthor author) {
 
         return given()
                 .spec(requestSpec())
