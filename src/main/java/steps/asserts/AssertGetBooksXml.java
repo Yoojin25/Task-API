@@ -1,4 +1,4 @@
-package Asserts;
+package steps.asserts;
 
 import models.response_positive.Book;
 
@@ -7,9 +7,9 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class AssertGetBooks {
+public class AssertGetBooksXml {
 
-    public static void checkGetBooks(List<Book> books) {
+    public static void checkGetBooksXml(List<Book> books) {
         assertThat(books, is(not(empty())));
     }
 }
