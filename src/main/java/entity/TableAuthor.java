@@ -21,6 +21,6 @@ public class TableAuthor {
     @XmlElement(name = "family_name", required = true)
     private String familyName;
 
-    @XmlElement(name = "second_name", required = true)
+    @XmlElement(name = "second_name")
     private String secondName;
 }

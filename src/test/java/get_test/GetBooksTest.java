@@ -20,15 +20,27 @@ public class GetBooksTest {
 
     @Test
     @DisplayName("Получение всех книг автора")
-    @Description("Сервис получает информацию обо всех книгах автора по указанному id, в ответе отображается список книг")
+    @Description("Сервис получает информацию обо всех книгах автора по указанному id, в ответе отображается список " +
+            "книг, статус-код 200")
     public void getBooksTest() {
         RequestSaveAuthor author = new RequestSaveAuthor("Lev", "Tolstoy", "Nikolaevich");
-        ResponsePositiveSaveAuthor authorSave = saveAuthor(author);
+        ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        saveBook("Voyna i mir", authorSave.getAuthorId());
+        saveBook("Voyna i mir", authorSave.getAuthorId(), 201);
 
-        List<Book> books = getBooks(String.valueOf(authorSave.getAuthorId()));
+        List<Book> books = getBooks(String.valueOf(authorSave.getAuthorId()), 200);
 
         AssertGetBooks.checkGetBooks(books);
+    }
+
+    @Test
+    @DisplayName("Получение пустого списка книг")
+    @Description("Сервис получает информацию о книгах автора по указанному id, в ответе отображается пустой список " +
+            "книг, статус-код 200")
+    public void getEmptyListOfBooks() {
+        RequestSaveAuthor author = new RequestSaveAuthor("Vladimir", "Mayakovskiy", "Vladimirovich");
+        ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
+
+        getBooks(String.valueOf(authorSave.getAuthorId()), 200);
     }
 }
