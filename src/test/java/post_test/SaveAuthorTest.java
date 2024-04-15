@@ -17,10 +17,10 @@ public class SaveAuthorTest {
 
     @Test
     @DisplayName("Сохранение нового автора")
-    @Description("Сервис сохраняет нового автора в таблицу author, в ответе отображается id сохраненного автора")
+    @Description("Сервис сохраняет нового автора в таблицу author, в ответе отображается id сохраненного автора, статус-код 201")
     public void saveAuthorTest() {
-        RequestSaveAuthor author = new RequestSaveAuthor("test","testt", "testtt");
-        ResponsePositiveSaveAuthor authorSave = saveAuthor(author);
+        RequestSaveAuthor author = new RequestSaveAuthor("Fedor","Dostoevskiy", "Mikhaylovich");
+        ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
         AssertSaveAuthor.checkSaveAuthor(authorSave);
     }

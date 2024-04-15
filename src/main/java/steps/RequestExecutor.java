@@ -1,5 +1,6 @@
 package steps;
 
+import io.restassured.response.ValidatableResponse;
 import models.request.Author;
 import models.request.RequestGetBooksXml;
 import models.request.RequestSaveAuthor;
@@ -11,22 +12,24 @@ import models.response_positive.ResponsePositiveSaveBook;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static steps.Specification.requestSpec;
-import static steps.Specification.requestSpecXml;
+import static steps.Specification.*;
 
 public class RequestExecutor {
 
-    public static ResponsePositiveSaveAuthor saveAuthor(RequestSaveAuthor author) {
+    public static ResponsePositiveSaveAuthor saveAuthor(RequestSaveAuthor author, int expectedStatusCode) {
 
         return given()
                 .spec(requestSpec())
                 .body(author)
                 .when()
                 .post(Endpoints.SAVE_AUTHOR)
+                .then()
+                .spec(responseSpec(expectedStatusCode))
+                .extract()
                 .as(ResponsePositiveSaveAuthor.class);
     }
 
-    public static ResponsePositiveSaveBook saveBook(String bookTitle, long id) {
+    public static ResponsePositiveSaveBook saveBook(String bookTitle, long id, int expectedStatusCode) {
         Author author = new Author(id);
         RequestSaveBook book = new RequestSaveBook(bookTitle, author);
 
@@ -35,10 +38,13 @@ public class RequestExecutor {
                 .body(book)
                 .when()
                 .post(Endpoints.SAVE_BOOK)
+                .then()
+                .spec(responseSpec(expectedStatusCode))
+                .extract()
                 .as(ResponsePositiveSaveBook.class);
     }
 
-    public static List<Book> getBooks(String id) {
+    public static List<Book> getBooks(String id, int expectedStatusCode) {
 
         return given()
                 .spec(requestSpec())
@@ -46,12 +52,13 @@ public class RequestExecutor {
                 .when()
                 .get(Endpoints.GET_BOOKS)
                 .then()
+                .spec(responseSpec(expectedStatusCode))
                 .extract()
                 .jsonPath()
                 .getList(".", Book.class);
     }
 
-    public static List<Book> getBooksXml(long authorId) {
+    public static List<Book> getBooksXml(long authorId, int expectedStatusCode) {
         RequestGetBooksXml idXml = new RequestGetBooksXml();
         idXml.setAuthorId(authorId);
 
@@ -61,8 +68,33 @@ public class RequestExecutor {
                 .when()
                 .post(Endpoints.GET_BOOKS_XML)
                 .then()
+                .spec(responseSpec(expectedStatusCode))
                 .extract()
                 .xmlPath()
                 .getList(".", Book.class);
+    }
+
+    public static ValidatableResponse getBooksValid(String id, int expectedStatusCode) {
+
+        return given()
+                .spec(requestSpec())
+                .pathParam("id", id)
+                .when()
+                .get(Endpoints.GET_BOOKS)
+                .then()
+                .spec(responseSpec(expectedStatusCode));
+    }
+
+    public static ValidatableResponse getBooksXmlValid(long authorId, int expectedStatusCode) {
+        RequestGetBooksXml idXml = new RequestGetBooksXml();
+        idXml.setAuthorId(authorId);
+
+        return given()
+                .spec(requestSpecXml())
+                .body(idXml)
+                .when()
+                .post(Endpoints.GET_BOOKS_XML)
+                .then()
+                .spec(responseSpec(expectedStatusCode));
     }
 }

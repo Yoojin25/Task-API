@@ -19,12 +19,24 @@ public class SaveBookTest {
 
     @Test
     @DisplayName("Сохранение новой книги")
-    @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги")
+    @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги, статус-код 201")
     public void saveBookTest() {
         RequestSaveAuthor author = new RequestSaveAuthor("Nikolay", "Gogol", "Vasilyevich");
-        ResponsePositiveSaveAuthor authorSave = saveAuthor(author);
+        ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        ResponsePositiveSaveBook book = saveBook("Noch pered Rozhdestvom", authorSave.getAuthorId());
+        ResponsePositiveSaveBook book = saveBook("Noch pered Rozhdestvom", authorSave.getAuthorId(), 201);
+
+        AssertSaveBook.checkSaveBook(book);
+    }
+
+    @Test
+    @DisplayName("Сохранение новой книги без отчества (secondName) автора")
+    @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги, статус-код 201")
+    public void saveBookWithoutAuthorSecondName() {
+        RequestSaveAuthor author = new RequestSaveAuthor("Ayn", "Rand", "");
+        ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
+
+        ResponsePositiveSaveBook book = saveBook("Atlant raspravil plechi", authorSave.getAuthorId(), 201);
 
         AssertSaveBook.checkSaveBook(book);
     }
