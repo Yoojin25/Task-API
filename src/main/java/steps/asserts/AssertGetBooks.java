@@ -12,4 +12,8 @@ public class AssertGetBooks {
     public static void checkGetBooks(List<Book> books) {
         assertThat(books, is(not(empty())));
     }
+
+    public static void checkGetEmptyListOfBooks(List<Book> books) {
+        assertThat(books, is(empty()));
+    }
 }

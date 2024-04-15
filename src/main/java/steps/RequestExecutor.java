@@ -1,10 +1,10 @@
 package steps;
 
-import io.restassured.response.ValidatableResponse;
 import models.request.Author;
 import models.request.RequestGetBooksXml;
 import models.request.RequestSaveAuthor;
 import models.request.RequestSaveBook;
+import models.response_negative.ResponseNegative;
 import models.response_positive.Book;
 import models.response_positive.ResponsePositiveSaveAuthor;
 import models.response_positive.ResponsePositiveSaveBook;
@@ -71,10 +71,25 @@ public class RequestExecutor {
                 .spec(responseSpec(expectedStatusCode))
                 .extract()
                 .xmlPath()
-                .getList(".", Book.class);
+                .getList("authors_books.books.book", Book.class);
     }
 
-    public static ValidatableResponse getBooksValid(String id, int expectedStatusCode) {
+    public static ResponseNegative saveBookNegative(String bookTitle, long id, int expectedStatusCode) {
+        Author author = new Author(id);
+        RequestSaveBook book = new RequestSaveBook(bookTitle, author);
+
+        return given()
+                .spec(requestSpec())
+                .body(book)
+                .when()
+                .post(Endpoints.SAVE_BOOK)
+                .then()
+                .spec(responseSpec(expectedStatusCode))
+                .extract()
+                .as(ResponseNegative.class);
+    }
+
+    public static ResponseNegative getBooksNegative(String id, int expectedStatusCode) {
 
         return given()
                 .spec(requestSpec())
@@ -82,10 +97,12 @@ public class RequestExecutor {
                 .when()
                 .get(Endpoints.GET_BOOKS)
                 .then()
-                .spec(responseSpec(expectedStatusCode));
+                .spec(responseSpec(expectedStatusCode))
+                .extract()
+                .as(ResponseNegative.class);
     }
 
-    public static ValidatableResponse getBooksXmlValid(long authorId, int expectedStatusCode) {
+    public static ResponseNegative getBooksXmlNegative(long authorId, int expectedStatusCode) {
         RequestGetBooksXml idXml = new RequestGetBooksXml();
         idXml.setAuthorId(authorId);
 
@@ -95,6 +112,8 @@ public class RequestExecutor {
                 .when()
                 .post(Endpoints.GET_BOOKS_XML)
                 .then()
-                .spec(responseSpec(expectedStatusCode));
+                .spec(responseSpec(expectedStatusCode))
+                .extract()
+                .as(ResponseNegative.class);
     }
 }

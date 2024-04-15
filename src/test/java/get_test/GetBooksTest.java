@@ -12,6 +12,7 @@ import steps.asserts.AssertGetBooks;
 
 import java.util.List;
 
+import static steps.DataGeneration.*;
 import static steps.RequestExecutor.*;
 
 @Epic("Тестирование GET-методов")
@@ -23,10 +24,10 @@ public class GetBooksTest {
     @Description("Сервис получает информацию обо всех книгах автора по указанному id, в ответе отображается список " +
             "книг, статус-код 200")
     public void getBooksTest() {
-        RequestSaveAuthor author = new RequestSaveAuthor("Lev", "Tolstoy", "Nikolaevich");
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        saveBook("Voyna i mir", authorSave.getAuthorId(), 201);
+        saveBook(bookTitleData(), authorSave.getAuthorId(), 201);
 
         List<Book> books = getBooks(String.valueOf(authorSave.getAuthorId()), 200);
 
@@ -38,9 +39,11 @@ public class GetBooksTest {
     @Description("Сервис получает информацию о книгах автора по указанному id, в ответе отображается пустой список " +
             "книг, статус-код 200")
     public void getEmptyListOfBooks() {
-        RequestSaveAuthor author = new RequestSaveAuthor("Vladimir", "Mayakovskiy", "Vladimirovich");
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        getBooks(String.valueOf(authorSave.getAuthorId()), 200);
+        List<Book> books = getBooks(String.valueOf(authorSave.getAuthorId()), 200);
+
+        AssertGetBooks.checkGetEmptyListOfBooks(books);
     }
 }

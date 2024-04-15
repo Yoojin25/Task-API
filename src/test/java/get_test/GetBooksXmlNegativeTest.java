@@ -3,9 +3,11 @@ package get_test;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import jdk.jfr.Description;
+import models.response_negative.ResponseNegative;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import steps.asserts.AssertNegative;
 
 import static steps.RequestExecutor.*;
 
@@ -18,6 +20,8 @@ public class GetBooksXmlNegativeTest {
     @Description("Сервис не получает информацию о книгах автора, статус-код 409")
     @ValueSource(longs = {1234567, -100})
     public void getBooksXmlNonExistAuthor(long id) {
-        getBooksXmlValid(id, 409);
+        ResponseNegative response = getBooksXmlNegative(id, 409);
+
+        AssertNegative.checkNegativeTest(response, "1004", "Указанный автор не существует в таблице");
     }
 }

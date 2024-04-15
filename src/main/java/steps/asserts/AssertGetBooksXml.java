@@ -12,4 +12,8 @@ public class AssertGetBooksXml {
     public static void checkGetBooksXml(List<Book> books) {
         assertThat(books, is(not(empty())));
     }
+
+    public static void checkGetEmptyListOfBooksXml(List<Book> books) {
+        assertThat(books, is(empty()));
+    }
 }
