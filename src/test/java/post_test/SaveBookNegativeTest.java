@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import steps.asserts.AssertNegative;
 
 import static steps.DataGeneration.*;
+import static steps.ExpectedResponseNegative.*;
 import static steps.RequestExecutor.*;
 
 @Epic("Тестирование POST-методов")
@@ -26,8 +27,7 @@ public class SaveBookNegativeTest {
 
         ResponseNegative response = saveBookNegative("", authorSave.getAuthorId(), 400);
 
-        AssertNegative.checkNegativeTest(response, "Валидация не пройдена", "Не передан " +
-                "обязательный параметр: bookTitle");
+        AssertNegative.checkNegativeTest(response, validationFailErrorCode, argNotPassedErrorMessage);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class SaveBookNegativeTest {
     public void saveBookNonExistAuthor() {
         ResponseNegative response = saveBookNegative(bookTitleData(), 1234567, 409);
 
-        AssertNegative.checkNegativeTest(response, "1004", "Указанный автор не существует в таблице");
+        AssertNegative.checkNegativeTest(response, nonExistAuthorErrorCode, nonExistAuthorErrorMessage);
     }
 
     @Test
@@ -48,6 +48,6 @@ public class SaveBookNegativeTest {
 
         ResponseNegative response = saveBookNegative(bookTitleDataMaxLength(), authorSave.getAuthorId(), 400);
 
-        AssertNegative.checkNegativeTest(response, "Валидация не пройдена", "Некорректный размер поля firstName");
+        AssertNegative.checkNegativeTest(response, validationFailErrorCode, invalidFieldSizeErrorMessage);
     }
 }

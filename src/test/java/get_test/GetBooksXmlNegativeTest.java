@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import steps.asserts.AssertNegative;
 
+import static steps.ExpectedResponseNegative.*;
 import static steps.RequestExecutor.*;
 
 @Epic("Тестирование POST-методов")
@@ -22,6 +23,6 @@ public class GetBooksXmlNegativeTest {
     public void getBooksXmlNonExistAuthor(long id) {
         ResponseNegative response = getBooksXmlNegative(id, 409);
 
-        AssertNegative.checkNegativeTest(response, "1004", "Указанный автор не существует в таблице");
+        AssertNegative.checkNegativeTest(response, nonExistAuthorErrorCode, nonExistAuthorErrorMessage);
     }
 }

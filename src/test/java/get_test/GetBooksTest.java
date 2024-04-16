@@ -27,11 +27,12 @@ public class GetBooksTest {
         RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        saveBook(bookTitleData(), authorSave.getAuthorId(), 201);
+        String bookTitle = bookTitleData();
+        saveBook(bookTitle, authorSave.getAuthorId(), 201);
 
         List<Book> books = getBooks(String.valueOf(authorSave.getAuthorId()), 200);
 
-        AssertGetBooks.checkGetBooks(books);
+        AssertGetBooks.checkGetBooks(books, authorSave, bookTitle);
     }
 
     @Test

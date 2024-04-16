@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import steps.asserts.AssertNegative;
 
+import static steps.ExpectedResponseNegative.*;
 import static steps.RequestExecutor.getBooksNegative;
 
 @Epic("Тестирование GET-методов")
@@ -22,7 +23,7 @@ public class GetBooksNegativeTest {
     public void getBooksWithIncorrectId(String id) {
         ResponseNegative response = getBooksNegative(id, 400);
 
-        AssertNegative.checkNegativeTest(response, "1001", "Некорректный обязательный параметр");
+        AssertNegative.checkNegativeTest(response, invalidArgErrorCode, invalidArgErrorMessage);
     }
 
     @ParameterizedTest(name = "id автора: {0}")
@@ -32,6 +33,6 @@ public class GetBooksNegativeTest {
     public void getBooksNonExistAuthor(String id) {
         ResponseNegative response = getBooksNegative(id, 409);
 
-        AssertNegative.checkNegativeTest(response, "1004", "Указанный автор не существует в таблице");
+        AssertNegative.checkNegativeTest(response, nonExistAuthorErrorCode, nonExistAuthorErrorMessage);
     }
 }
