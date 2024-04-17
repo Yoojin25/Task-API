@@ -23,4 +23,7 @@ public class TableAuthor {
 
     @XmlElement(name = "second_name")
     private String secondName;
+
+    @XmlElement(name = "birth_date")
+    private String birthDate;
 }

@@ -10,10 +10,16 @@ import static org.hamcrest.Matchers.*;
 
 public class AssertGetBooks {
 
-    public static void checkGetBooks(List<Book> books, ResponsePositiveSaveAuthor authorSave, String bookTitle) {
+    public static void checkGetBooks(List<Book> books, ResponsePositiveSaveAuthor authorSave, List<String> titles, String birthDate) {
         assertThat(books, is(not(empty())));
+
         assertThat(authorSave.getAuthorId(), equalTo(books.get(0).getAuthor().getId()));
-        assertThat(bookTitle, equalTo(books.get(0).getBookTitle()));
+
+        for (int i = 0; i < books.size(); i++) {
+            assertThat(titles.get(i), equalTo(books.get(i).getBookTitle()));
+        }
+
+        assertThat(birthDate, equalTo(books.get(0).getAuthor().getBirthDate()));
     }
 
     public static void checkGetEmptyListOfBooks(List<Book> books) {
