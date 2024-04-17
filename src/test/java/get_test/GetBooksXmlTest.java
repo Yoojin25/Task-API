@@ -12,6 +12,7 @@ import steps.asserts.AssertGetBooksXml;
 
 import java.util.List;
 
+import static steps.DataGeneration.*;
 import static steps.RequestExecutor.*;
 
 @Epic("Тестирование POST-методов")
@@ -23,10 +24,10 @@ public class GetBooksXmlTest {
     @Description("Сервис получает информацию обо всех книгах автора по указанному id, в ответе отображается список " +
             "книг в XML формате, статус-код 200")
     public void getBooksXmlTest() {
-        RequestSaveAuthor author = new RequestSaveAuthor("Anton", "Chekhov", "Pavlovich");
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        saveBook("Kashtanka", authorSave.getAuthorId(), 201);
+        saveBook(bookTitleData(), authorSave.getAuthorId(), 201);
 
         List<Book> books = getBooksXml(authorSave.getAuthorId(), 200);
 
@@ -38,9 +39,11 @@ public class GetBooksXmlTest {
     @Description("Сервис получает информацию о книгах автора по указанному id, в ответе отображается пустой список " +
             "книг, статус-код 200")
     public void getEmptyListOfBooksXml() {
-        RequestSaveAuthor author = new RequestSaveAuthor("Author3", "Author3", "Author3");
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        getBooksXml(authorSave.getAuthorId(), 200);
+        List<Book> books = getBooksXml(authorSave.getAuthorId(), 200);
+
+        AssertGetBooksXml.checkGetEmptyListOfBooksXml(books);
     }
 }

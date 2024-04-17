@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.asserts.AssertSaveBook;
 
+import static steps.DataGeneration.*;
 import static steps.RequestExecutor.saveAuthor;
 import static steps.RequestExecutor.saveBook;
 
@@ -21,10 +22,10 @@ public class SaveBookTest {
     @DisplayName("Сохранение новой книги")
     @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги, статус-код 201")
     public void saveBookTest() {
-        RequestSaveAuthor author = new RequestSaveAuthor("Nikolay", "Gogol", "Vasilyevich");
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        ResponsePositiveSaveBook book = saveBook("Noch pered Rozhdestvom", authorSave.getAuthorId(), 201);
+        ResponsePositiveSaveBook book = saveBook(bookTitleData(), authorSave.getAuthorId(), 201);
 
         AssertSaveBook.checkSaveBook(book);
     }
@@ -33,10 +34,10 @@ public class SaveBookTest {
     @DisplayName("Сохранение новой книги без отчества (secondName) автора")
     @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги, статус-код 201")
     public void saveBookWithoutAuthorSecondName() {
-        RequestSaveAuthor author = new RequestSaveAuthor("Ayn", "Rand", "");
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), "");
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
-        ResponsePositiveSaveBook book = saveBook("Atlant raspravil plechi", authorSave.getAuthorId(), 201);
+        ResponsePositiveSaveBook book = saveBook(bookTitleData(), authorSave.getAuthorId(), 201);
 
         AssertSaveBook.checkSaveBook(book);
     }
