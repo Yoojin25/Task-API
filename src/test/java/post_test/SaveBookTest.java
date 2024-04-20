@@ -13,6 +13,7 @@ import steps.asserts.AssertSaveBook;
 import static steps.DataGeneration.*;
 import static steps.RequestExecutor.saveAuthor;
 import static steps.RequestExecutor.saveBook;
+import static utils.DateFormatting.authorBirthDate;
 
 @Epic("Тестирование POST-методов")
 @Story("Сохранение книги, позитивный сценарий")
@@ -22,7 +23,9 @@ public class SaveBookTest {
     @DisplayName("Сохранение новой книги")
     @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги, статус-код 201")
     public void saveBookTest() {
-        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
+        String birthDate = authorBirthDate(2020, 02, 20);
+
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData(), birthDate);
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
         ResponsePositiveSaveBook book = saveBook(bookTitleData(), authorSave.getAuthorId(), 201);
@@ -34,7 +37,9 @@ public class SaveBookTest {
     @DisplayName("Сохранение новой книги без отчества (secondName) автора")
     @Description("Сервис сохраняет новую книгу в таблицу book, в ответе отображается id сохраненной книги, статус-код 201")
     public void saveBookWithoutAuthorSecondName() {
-        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), "");
+        String birthDate = authorBirthDate(2020, 02, 20);
+
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), "", birthDate);
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
         ResponsePositiveSaveBook book = saveBook(bookTitleData(), authorSave.getAuthorId(), 201);

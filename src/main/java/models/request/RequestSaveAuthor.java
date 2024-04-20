@@ -11,4 +11,5 @@ public class RequestSaveAuthor {
     private String firstName;
     private String familyName;
     private String secondName;
+    private String birthDate;
 }

@@ -1,5 +1,6 @@
 package steps;
 
+import io.restassured.http.ContentType;
 import models.request.Author;
 import models.request.RequestGetBooksXml;
 import models.request.RequestSaveAuthor;
@@ -8,6 +9,7 @@ import models.response_negative.ResponseNegative;
 import models.response_positive.Book;
 import models.response_positive.ResponsePositiveSaveAuthor;
 import models.response_positive.ResponsePositiveSaveBook;
+import utils.AuthToken;
 
 import java.util.List;
 
@@ -115,5 +117,19 @@ public class RequestExecutor {
                 .spec(responseSpec(expectedStatusCode))
                 .extract()
                 .as(ResponseNegative.class);
+    }
+
+    public static String getJwt() {
+        AuthToken data = new AuthToken("test_log", "123qweasd");
+
+        return given()
+                .contentType(ContentType.JSON)
+                .body(data)
+                .when()
+                .get("http://localhost:8080/auth/login")
+                .then()
+                .extract()
+                .jsonPath()
+                .getString("jwtToken");
     }
 }

@@ -13,6 +13,7 @@ import steps.asserts.AssertNegative;
 import static steps.DataGeneration.*;
 import static steps.ExpectedResponseNegative.*;
 import static steps.RequestExecutor.*;
+import static utils.DateFormatting.authorBirthDate;
 
 @Epic("Тестирование POST-методов")
 @Story("Сохранение книги, негативный сценарий")
@@ -22,7 +23,9 @@ public class SaveBookNegativeTest {
     @DisplayName("Сохранение новой книги без указания bookTitle")
     @Description("Сервис не сохраняет новую книгу в таблицу book, статус-код 400")
     public void saveBookWithEmptyBookTitle() {
-        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
+        String birthDate = authorBirthDate(2020, 02, 20);
+
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData(), birthDate);
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
         ResponseNegative response = saveBookNegative("", authorSave.getAuthorId(), 400);
@@ -43,7 +46,9 @@ public class SaveBookNegativeTest {
     @DisplayName("Сохранение новой книги c bookTitle превышающим максимальную длину")
     @Description("Сервис не сохраняет новую книгу в таблицу book, статус-код 400")
     public void bookTitleGreaterThanMaxLength() {
-        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData());
+        String birthDate = authorBirthDate(2020, 02, 20);
+
+        RequestSaveAuthor author = new RequestSaveAuthor(firstNameData(), familyNameData(), secondNameData(), birthDate);
         ResponsePositiveSaveAuthor authorSave = saveAuthor(author, 201);
 
         ResponseNegative response = saveBookNegative(bookTitleDataMaxLength(), authorSave.getAuthorId(), 400);

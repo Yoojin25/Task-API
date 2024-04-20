@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,6 +21,9 @@ public class Book {
 
     @XmlElement(name = "book_title", required = true)
     private String bookTitle;
+
+    @XmlElement(name = "updated", required = true)
+    private Date updated;
 
     @XmlElement(name = "author", required = true)
     private TableAuthor author;

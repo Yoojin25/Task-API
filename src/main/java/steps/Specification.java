@@ -8,11 +8,14 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static steps.RequestExecutor.getJwt;
+
 public class Specification {
 
     public static RequestSpecBuilder specBuilder() {
         return new RequestSpecBuilder()
                 .setBaseUri("http://localhost:8080")
+                .addHeader("Authorization", "Bearer " + getJwt())
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter());
     }
